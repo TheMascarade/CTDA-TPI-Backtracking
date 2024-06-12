@@ -1,12 +1,12 @@
-# B = [
-#     [9, 0, 12, 5],
-#     [0, 20, 0, 0],
-#     [4, 0, 1, 9],
-# ]
 B = [
-    [8, 1],
-    [1, 5],
+    [9, 0, 12, 5],
+    [0, 20, 0, 0],
+    [4, 0, 1, 9],
 ]
+# B = [
+#     [8, 1],
+#     [1, 5],
+# ]
 patrones_prohibidos = [
     [
         [1, 0, 1],
@@ -60,17 +60,13 @@ def belleza(jardin, patrones_prohib):
 
 
 def generar_soluciones(padre: "Nodo", bellezas, fila=0, col=0):
-    if col >= len(bellezas[0]):
-        if fila >= len(bellezas):
-            return
-        col = 0
-        fila += 1
-
     for fila in range(fila, len(bellezas)):
-        for col in range(col, len(bellezas[0])):
+        for col in range(col, len(bellezas[0]) - 1):
+            print("padre", padre.cords)
             print("fila", fila)
             print("columna", col)
             print("prohibidas", padre.celdas_prohibidas)
+            print("----------------")
             if (fila, col) in padre.celdas_prohibidas:
                 continue
             nuevo_nodo = Nodo(
@@ -78,16 +74,18 @@ def generar_soluciones(padre: "Nodo", bellezas, fila=0, col=0):
                 jardin_estado=padre.jardin_estado,
                 sum_belleza=padre.sum_belleza + bellezas[fila][col],
                 belleza=bellezas[fila][col],
-                celdas_prohib=padre.celdas_prohibidas,
+                celdas_prohib=padre.celdas_prohibidas.copy(),
             )
             nuevo_nodo.celdas_prohibidas.update(
                 [
-                    (fila + 1, col + 1),
+                    (fila, col - 1),
                     (fila, col + 1),
                     (fila + 1, col),
-                    (fila - 1, col - 1),
-                    (fila, col - 1),
                     (fila - 1, col),
+                    (fila - 1, col - 1),
+                    (fila - 1, col + 1),
+                    (fila + 1, col - 1),
+                    (fila + 1, col + 1),
                 ]
             )
             nuevo_nodo.jardin_estado[fila][col] = bellezas[fila][col]
@@ -99,6 +97,7 @@ def generar_soluciones(padre: "Nodo", bellezas, fila=0, col=0):
                 col + 1,
             )
         col = 0
+    return
 
 
 belleza(B, None)
