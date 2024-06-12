@@ -1,0 +1,13 @@
+Problema del Jardín de Flores:
+Tienes un jardín rectangular de 𝑛×𝑚 celdas, y quieres plantar flores en algunas celdas siguiendo ciertas reglas para maximizar la belleza del jardín. La belleza del jardín se define como la suma de las bellezas individuales de todas las flores plantadas. Cada celda del jardín tiene una belleza inherente asociada, representada por un número entero positivo. Sin embargo, hay restricciones sobre cómo puedes plantar las flores:
+	1	Regla de distancia: No puedes plantar flores en dos celdas adyacentes (horizontal, vertical o diagonalmente).
+	2	Regla de patrones: Algunos patrones predefinidos de plantación no están permitidos. Por ejemplo, puede haber un patrón prohibido que no permita plantar flores en forma de L.
+
+Entrada:
+	•	Un entero 𝑛 que representa el número de filas del jardín.
+	•	Un entero 𝑚 que representa el número de columnas del jardín.
+	•	Una matriz 𝐵 de 𝑛×𝑚 donde 𝐵[𝑖][𝑗] representa la belleza de plantar una flor en la celda (𝑖,𝑗).
+	•	Un conjunto de patrones prohibidos, donde cada patrón está definido por una matriz de dimensiones variables con 0s y 1s (1 indica una celda que contiene una flor y 0 una celda vacía).
+
+Salida:
+	•	La máxima belleza que se puede obtener al plantar flores en el jardín cumpliendo con las reglas dadas.
