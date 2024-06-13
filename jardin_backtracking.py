@@ -16,6 +16,33 @@ patrones_prohibidos = [
 ]
 
 
+def existe_patron(jardin, patron):
+    # Si la matriz del patron es de mayor tamaño que la del jardin
+    # el patron no puede existir
+    if len(patron) > len(jardin) or len(patron[0]) > len(jardin[0]):
+        return False
+
+    # Caso en que la matriz del patron y el jardin sean de igual tamaño
+    # comprobamos si los 1 coinciden en ambas matrices
+    if len(patron) == len(jardin) and len(patron[0]) == len(jardin[0]):
+        for fila in range(len(jardin)):
+            for col in range(len(jardin[0])):
+                if patron[fila][col] == 1 and jardin[fila][col] != 1:
+                    return False
+        return True
+
+    # Caso en que la matriz de jardin sea de mayores dimensiones que el patron
+    dy = len(jardin) - len(patron)
+    dx = len(jardin[0]) - len(patron[0])
+
+
+def es_jardin_valido(jardin, patrones_prohib):
+    for patron in patrones_prohib:
+        if existe_patron(jardin, patron):
+            return False
+    return True
+
+
 class Nodo:
     def __init__(self, cords, jardin_estado, sum_belleza: int, belleza, celdas_prohib):
         self.jardin_estado: list[list[int]] = jardin_estado
@@ -62,11 +89,11 @@ def belleza(jardin, patrones_prohib):
 def generar_soluciones(padre: "Nodo", bellezas, fila=0, col=0):
     for fila in range(fila, len(bellezas)):
         for col in range(col, len(bellezas[0]) - 1):
-            print("padre", padre.cords)
-            print("fila", fila)
-            print("columna", col)
-            print("prohibidas", padre.celdas_prohibidas)
-            print("----------------")
+            # print("padre", padre.cords)
+            # print("fila", fila)
+            # print("columna", col)
+            # print("prohibidas", padre.celdas_prohibidas)
+            # print("----------------")
             if (fila, col) in padre.celdas_prohibidas:
                 continue
             nuevo_nodo = Nodo(
@@ -88,7 +115,7 @@ def generar_soluciones(padre: "Nodo", bellezas, fila=0, col=0):
                     (fila + 1, col + 1),
                 ]
             )
-            nuevo_nodo.jardin_estado[fila][col] = bellezas[fila][col]
+            nuevo_nodo.jardin_estado[fila][col] = 1
             padre.nuevo_hijo(nuevo_nodo)
             generar_soluciones(
                 nuevo_nodo,
