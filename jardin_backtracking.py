@@ -16,7 +16,7 @@ patrones_prohibidos = [
 ]
 
 
-def existe_patron(jardin, patron):
+def existe_patron(jardin, patron) -> bool:
     # Si la matriz del patron es de mayor tamaño que la del jardin
     # el patron no puede existir
     if len(patron) > len(jardin) or len(patron[0]) > len(jardin[0]):
@@ -24,16 +24,30 @@ def existe_patron(jardin, patron):
 
     # Caso en que la matriz del patron y el jardin sean de igual tamaño
     # comprobamos si los 1 coinciden en ambas matrices
-    if len(patron) == len(jardin) and len(patron[0]) == len(jardin[0]):
-        for fila in range(len(jardin)):
-            for col in range(len(jardin[0])):
-                if patron[fila][col] == 1 and jardin[fila][col] != 1:
+
+    # Caso en que la matriz de jardin sea de mayores dimensiones que el patron
+    def patron_en_submatriz(subm, patron):
+        for fila in range(len(subm)):
+            for col in range(len(subm[0])):
+                if patron[fila][col] == 1 and subm[fila][col] != 1:
                     return False
         return True
 
-    # Caso en que la matriz de jardin sea de mayores dimensiones que el patron
-    dy = len(jardin) - len(patron)
-    dx = len(jardin[0]) - len(patron[0])
+    if len(patron) == len(jardin) and len(patron[0]) == len(jardin[0]):
+        patron_en_submatriz(jardin, patron)
+
+    filas_patron = len(patron)
+    cols_patron = len(patron[0])
+    filas_jardin = len(jardin)
+    cols_jardin = len(jardin[0])
+    for i in range(filas_jardin - filas_patron + 1):
+        for j in range(cols_jardin - cols_patron + 1):
+            submatriz = [
+                fila[j : j + cols_patron] for fila in jardin[i : i + filas_patron]
+            ]
+            if patron_en_submatriz(submatriz, patron):
+                return True
+    return False
 
 
 def es_jardin_valido(jardin, patrones_prohib):
