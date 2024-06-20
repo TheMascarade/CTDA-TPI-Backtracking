@@ -23,6 +23,7 @@ class TestExistePatron(unittest.TestCase):
 
     def test_existe_ningun_patron(self):
         self.assertTrue(src.es_jardin_valido(j3, patrones_prohibidos))
+        self.assertTrue(src.es_jardin_valido(j4, patrones_prohibidos))
 
 
 j1 = [
@@ -39,6 +40,11 @@ j3 = [
     [0, 0, 1],
     [0, 0, 0],
     [1, 0, 1],
+]
+j4 = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 1],
+    [1, 0, 1, 0],
 ]
 
 patrones_prohibidos = [
