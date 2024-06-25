@@ -21,7 +21,7 @@ patrones_prohibidos = [
 class Nodo:
     def __init__(
         self,
-        cords=(0, 0),
+        cords=(),
         jardin_estado=[[]],
         sum_belleza: int = 0,
         belleza=0,
@@ -33,7 +33,6 @@ class Nodo:
         self.belleza = belleza
         self.celdas_prohibidas: set[tuple[int, int]] = celdas_prohib.copy()
         self.hijos: list["Nodo"] = []
-        self.jardin_estado[cords[0]][cords[1]] = 1
 
     def __str__(self, nivel=0) -> str:
         nodo_str = (
@@ -83,8 +82,6 @@ def existe_patron(jardin, patron) -> bool:
             ]
             if patron_en_submatriz(submatriz, patron):
                 return True
-            # if patron == submatriz:
-            # return True
     return False
 
 
@@ -103,11 +100,10 @@ def belleza_maxima(jardin, patrones_prohib):
         nonlocal belleza_max
         nonlocal nodo_max
         if len(nodo.hijos) == 0:
-            # print(nodo.jardin_estado)
             valido = es_jardin_valido(nodo.jardin_estado, patrones_prohib)
-            print(valido)
-            if nodo.sum_belleza > belleza_max and valido:
-                print(True)
+            if nodo.sum_belleza >= belleza_max and valido:
+                imp_matriz(nodo.jardin_estado)
+                print("-------------")
                 belleza_max = nodo.sum_belleza
                 nodo_max = nodo
 
@@ -124,9 +120,14 @@ def belleza_maxima(jardin, patrones_prohib):
         padre=raiz,
         bellezas=jardin,
     )
+    print("Arbol combinatorio")
+    print("------------------")
     print(raiz)
+    print("------------------")
+    print("Jardines optimos:")
+    print("******************")
     eval_hojas(raiz)
-    print(belleza_max)
+    print("Belleza maxima:", belleza_max)
 
 
 def generar_soluciones(padre: "Nodo", bellezas, fila=0, col=0):
@@ -153,7 +154,8 @@ def generar_soluciones(padre: "Nodo", bellezas, fila=0, col=0):
                     (fila + 1, col + 1),
                 ]
             )
-            print(nuevo_nodo.jardin_estado)
+
+            nuevo_nodo.jardin_estado[fila][col] = 1
             padre.nuevo_hijo(nuevo_nodo)
             generar_soluciones(
                 nuevo_nodo,
@@ -162,6 +164,11 @@ def generar_soluciones(padre: "Nodo", bellezas, fila=0, col=0):
                 col + 1,
             )
         col = 0
+
+
+def imp_matriz(matriz: list[list]):
+    for fila in matriz:
+        print(fila)
 
 
 belleza_maxima(B, patrones_prohibidos)
